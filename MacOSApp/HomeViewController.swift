@@ -70,6 +70,10 @@ class HomeViewController: NSViewController {
         buttn.action      = #selector(buttonClickEvent)
         self.view.addSubview(buttn)
         
+        
+        let view = NSView.init(frame: NSRect.init(x: 300, y: 100, width: 100, height: 30))
+        
+        self.view.addSubview(view)
      
         
     }
