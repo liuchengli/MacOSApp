@@ -11,25 +11,41 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-
-
+    var window :  NSWindow!
+    // MARK:App 代理方法
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
         let w : CGFloat = NSScreen.main?.frame.size.width ?? 0/2
         let h : CGFloat = NSScreen.main?.frame.size.height ?? 0/2
         
-        var window = NSApplication.shared.keyWindow
+        let style : NSWindow.StyleMask = [.titled,
+                                          .closable,
+                                          .resizable,
+                                          .miniaturizable,
+                                          ]
+        window = NSApplication.shared.keyWindow
         
         if window == nil {
             
-            window = NSWindow.init(contentRect: NSRect.init(x: 0, y: 0, width: w, height: h), styleMask: NSWindow.StyleMask(rawValue: NSWindow.StyleMask.titled.rawValue | NSWindow.StyleMask.closable.rawValue | NSWindow.StyleMask.miniaturizable.rawValue | NSWindow.StyleMask.resizable.rawValue), backing: NSWindow.BackingStoreType.buffered, defer: true)
+            window = NSWindow.init(contentRect: NSRect.init(x: 0, y: 0, width: w, height: h), styleMask: style, backing: NSWindow.BackingStoreType.buffered, defer: true)
         }
         
         window?.title = "CICC主视窗"
         window?.makeKeyAndOrderFront(self)
         window?.center()
-        window?.contentViewController = HomeViewController()
+        let VC = HomeViewController()
+        window?.contentViewController = VC
+        window.contentView            = VC.view
+        
+        
+        
+    
+        
+        // 若有模态窗口
+        NotificationCenter.default.addObserver(self, selector: #selector(windowClose(window: )), name: NSWindow.willCloseNotification, object: nil)
+        
+        
         
     }
 
@@ -58,5 +74,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
 
+    
+    // MARK:自定义方法
+    
+    // MARK:模态关闭
+    @objc func windowClose(window : NSWindow){
+        NSApplication.shared.stopModal()
+    }
+    
+   
+    
+    
+    
 }
 

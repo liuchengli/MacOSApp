@@ -10,11 +10,6 @@ import Cocoa
 
 class HomeViewController: NSViewController {
 
-//    override func loadView() {
-//        
-////        let frame : NSRect  = NSApplication.shared.keyWindow?.frame ?? NSRect.init(x: 0, y: 0, width: 0, height: 0)
-////        self.view = NSView.init(frame: frame)
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,12 +17,24 @@ class HomeViewController: NSViewController {
         self.title = "线图"
         // Do any additional setup after loading the view.
         
-        self.createUI()
         
         
+        self.buildUI()
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(addWindowUI(window: )), name: NSWindow.didResizeNotification, object: nil)
         
     }
 
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        
+        self.view.window?.isRestorable = false // 不记忆窗口上次退出的位置
+        self.view.window?.center()
+        
+        self.addWindowUI(window: self.view.window!)
+    }
+    
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
@@ -35,7 +42,28 @@ class HomeViewController: NSViewController {
     }
 
     
-    func createUI(){
+    // MARK:构建窗口
+   @objc func addWindowUI(window : NSWindow){
+        
+        if  let titleView = self.view.window?.standardWindowButton(.closeButton)?.superview {
+            
+            let registerBtn    = NSButton()
+            let x              = self.view.frame.width - 80
+            let frame          = CGRect(x: x, y: 0, width: 70, height: 22)
+            registerBtn.frame  = frame
+            registerBtn.title  = "注册"
+            registerBtn.target = self
+            registerBtn.bezelStyle = .rounded
+            registerBtn.setButtonType(.pushOnPushOff)
+            titleView.addSubview(registerBtn)
+            
+        }
+        
+    }
+    
+    
+    // MARK:构建视图
+    func buildUI(){
         
       
        
@@ -71,7 +99,11 @@ class HomeViewController: NSViewController {
         self.view.addSubview(buttn)
         
         
-        let view = NSView.init(frame: NSRect.init(x: 300, y: 100, width: 100, height: 30))
+        let view = NSView.init(frame: NSRect.init(x: 50, y: 50, width: 300, height: 200))
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor.lightGray.cgColor
+        view.layer?.borderWidth     = 2
+        view.layer?.cornerRadius    = 10
         
         self.view.addSubview(view)
      
