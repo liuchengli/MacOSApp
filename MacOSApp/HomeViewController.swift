@@ -99,11 +99,11 @@ class HomeViewController: NSViewController {
         self.view.addSubview(buttn)
         
         
-        let view = NSView.init(frame: NSRect.init(x: 50, y: 50, width: 300, height: 200))
+        let view = NSView.init(frame: NSRect.init(x: self.view.frame.width/2 - 150, y: 50, width: 300, height: 200))
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.lightGray.cgColor
-        view.layer?.borderWidth     = 2
-        view.layer?.cornerRadius    = 10
+        view.layer?.borderWidth     = 1
+        view.layer?.cornerRadius    = 5
         
         self.view.addSubview(view)
      
